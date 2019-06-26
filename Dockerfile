@@ -41,12 +41,11 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/" | tee -a 
     apt-get install -y r-recommended=${R_VERSION} && \
     apt-get install -y r-base=${R_VERSION}
 RUN Rscript -e 'install.packages("BiocManager", repos = "http://cran.us.r-project.org")'
+RUN Rscript -e 'devtools::install_github('cole-trapnell-lab/monocle3')'
 
 ##############
 ## BiocManager for installing bioconductor packages
-RUN echo "BiocManager::install(c(\"devtools\", \"remotes\", \"clusterExperiment\", \"drisso/fletcher2017data\", \"optparse\", \"logging\"), dependencies=TRUE)" > ${SRC}/install_pkgs.R  && \
-    echo "BiocManager::install(\"BiocGenerics\", \"DelayedArray\", \"DelayedMatrixStats\", \"limma\", \"S4Vectors\", \"SingleCellExperiment\", \"SummarizedExperiment\", INSTALL_opts = c(\"--install-tests\"))" >> ${SRC}/install_pkgs.R && \
-    echo "devtools::install_github('cole-trapnell-lab/monocle3')" > ${SRC}/install_pkgs.R  && \
+RUN echo "BiocManager::install(c(\"devtools\", \"remotes\", \"clusterExperiment\", \"drisso/fletcher2017data\", \"optparse\", \"logging\", \"BiocGenerics\", \"DelayedArray\", \"DelayedMatrixStats\", \"limma\", \"S4Vectors\", \"SingleCellExperiment\", \"SummarizedExperiment\"), dependencies=TRUE)" > ${SRC}/install_pkgs.R  && \
     Rscript ${SRC}/install_pkgs.R
 
 ##############
