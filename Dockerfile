@@ -41,12 +41,13 @@ RUN echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/" | tee -a 
     apt-get install -y r-recommended=${R_VERSION} && \
     apt-get install -y r-base=${R_VERSION}
 RUN Rscript -e 'install.packages("BiocManager", repos = "http://cran.rstudio.com")'
-RUN Rscript -e 'devtools::install_github('cole-trapnell-lab/monocle3')'
 
 ##############
 ## BiocManager for installing bioconductor packages
 RUN echo "BiocManager::install(c(\"devtools\", \"remotes\", \"clusterExperiment\", \"drisso/fletcher2017data\", \"optparse\", \"logging\", \"BiocGenerics\", \"DelayedArray\", \"DelayedMatrixStats\", \"limma\", \"S4Vectors\", \"SingleCellExperiment\", \"SummarizedExperiment\"), dependencies=TRUE)" > ${SRC}/install_pkgs.R  && \
-    Rscript ${SRC}/install_pkgs.R
+  Rscript ${SRC}/install_pkgs.R
+RUN Rscript -e 'devtools::install_github('cole-trapnell-lab/monocle3')'
+
 
 ##############
 ## Install wrapper script
